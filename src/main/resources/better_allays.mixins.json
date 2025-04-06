@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "rings_of_saturn.github.io.better_allays.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AllayBrainMixin",
+    "AllayEntityMixin",
+    "AllayEntityMixin$VibrationMixin",
+    "BlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

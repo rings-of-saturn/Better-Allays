@@ -1,0 +1,33 @@
+{
+  "accessWidener" : "better_allays.accesswidener",
+  "schemaVersion": 1,
+  "id": "better_allays",
+  "version": "${version}",
+  "name": "Better Allays",
+  "description": "Makes it so allays can be used to transport and filter items!",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/better_allays/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "rings_of_saturn.github.io.better_allays.client.BetterAllaysClient"
+    ],
+    "main": [
+      "rings_of_saturn.github.io.better_allays.BetterAllays"
+    ]
+  },
+  "mixins": [
+    "better_allays.mixins.json",
+    {
+      "config": "better_allays.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
