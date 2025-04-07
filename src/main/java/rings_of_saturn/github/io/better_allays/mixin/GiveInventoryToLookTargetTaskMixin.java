@@ -1,12 +1,10 @@
 package rings_of_saturn.github.io.better_allays.mixin;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.InventoryOwner;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.LookTarget;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.task.GiveInventoryToLookTargetTask;
-import net.minecraft.entity.ai.brain.task.MultiTickTask;
 import net.minecraft.entity.passive.AllayBrain;
 import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.item.ItemStack;
@@ -38,11 +36,11 @@ public abstract class GiveInventoryToLookTargetTaskMixin<E extends LivingEntity 
 
     @Inject(at= @At("HEAD"), method = "keepRunning", cancellable = true)
     protected void keepRunning(ServerWorld world, E entity, long time, CallbackInfo ci) {
-        Optional<LookTarget> optional = this.lookTargetFunction.apply(entity);
-        if (optional.isPresent()) {
-            LookTarget lookTarget = optional.get();
-            double d = lookTarget.getPos().distanceTo(entity.getEyePos());
-            if (d < 3.0) {
+        Optional<LookTarget> optionalLookAtTarget = this.lookTargetFunction.apply(entity);
+        if (optionalLookAtTarget.isPresent()) {
+            LookTarget lookTarget = optionalLookAtTarget.get();
+            double d = lookTarget.getPos().distanceTo(entity.getEyePos().add(entity.getMovementDirection().getOffsetX(),entity.getMovementDirection().getOffsetY(),entity.getMovementDirection().getOffsetZ()));
+            if (d < 1) {
                 for (int i = 0; i < entity.getInventory().size(); i++) {
                     if(!entity.getInventory().getStack(i).isEmpty()) {
                         ItemStack itemStack = entity.getInventory().removeStack(i, 1);
