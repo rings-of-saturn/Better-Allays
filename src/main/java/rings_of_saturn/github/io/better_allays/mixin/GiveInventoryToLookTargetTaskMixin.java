@@ -34,7 +34,7 @@ public abstract class GiveInventoryToLookTargetTaskMixin<E extends LivingEntity 
 
     @Shadow protected abstract void triggerCriterion(LookTarget target, ItemStack stack, ServerPlayerEntity player);
 
-    @Inject(at= @At("HEAD"), method = "keepRunning", cancellable = true)
+    @Inject(at= @At("HEAD"), method = "keepRunning")
     protected void keepRunning(ServerWorld world, E entity, long time, CallbackInfo ci) {
         Optional<LookTarget> optionalLookAtTarget = this.lookTargetFunction.apply(entity);
         if (optionalLookAtTarget.isPresent()) {
@@ -49,9 +49,7 @@ public abstract class GiveInventoryToLookTargetTaskMixin<E extends LivingEntity 
                                 playThrowSound(entity, itemStack, offsetTarget(lookTarget));
                             }
                             if (entity instanceof AllayEntity allayEntity) {
-                                AllayBrain.getLikedPlayer(allayEntity).ifPresent((player) -> {
-                                    this.triggerCriterion(lookTarget, itemStack, player);
-                                });
+                                AllayBrain.getLikedPlayer(allayEntity).ifPresent((player) -> this.triggerCriterion(lookTarget, itemStack, player));
                             }
                         }
                     }

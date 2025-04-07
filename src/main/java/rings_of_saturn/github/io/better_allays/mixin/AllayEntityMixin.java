@@ -1,12 +1,9 @@
 package rings_of_saturn.github.io.better_allays.mixin;
 
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.component.type.BundleContentsComponent;
 import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AllayBrain;
@@ -32,7 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import rings_of_saturn.github.io.better_allays.item.component.ModComponents;
 
-import java.util.Iterator;
 import java.util.Objects;
 
 @Mixin(AllayEntity.class)
@@ -94,10 +90,10 @@ public abstract class AllayEntityMixin {
         @Inject(at= @At("HEAD"), method = "accept", cancellable = true)
         private void addAmnesia(ServerWorld world, BlockPos pos, RegistryEntry<GameEvent> event, Entity sourceEntity, Entity entity, float distance, CallbackInfo ci){
             ci.cancel();
-            if (event.matches(GameEvent.NOTE_BLOCK_PLAY)) {
+            if (GameEvent.NOTE_BLOCK_PLAY.getKey().isPresent() && event.matchesKey(GameEvent.NOTE_BLOCK_PLAY.getKey().get())) {
                 if(entity != null) {
                     AllayEntity allay = (AllayEntity) world.getEntity(entity.getUuid());
-                    if (allay.getBrain().getOptionalRegisteredMemory(MemoryModuleType.LIKED_NOTEBLOCK).get().pos() == pos) {
+                    if (allay != null && allay.getBrain().getOptionalRegisteredMemory(MemoryModuleType.LIKED_NOTEBLOCK).isPresent() && allay.getBrain().getOptionalRegisteredMemory(MemoryModuleType.LIKED_NOTEBLOCK).get().pos() == pos) {
                         AllayBrain.rememberNoteBlock(allay, new BlockPos(pos));
                     }
                 }
